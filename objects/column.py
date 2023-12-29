@@ -2,11 +2,14 @@ import random
 import configs
 import pygame.sprite
 import assets
+from layer import Layer
 
 
 class Column(pygame.sprite.Sprite):
     def __init__(self, *groups):
+        self._layer = Layer.OBSTACLE
         self.gap = 100
+
         self.sprite = assets.get_sprite("pipe-green")
         self.sprite_rect = self.sprite.get_rect()
 
@@ -28,6 +31,9 @@ class Column(pygame.sprite.Sprite):
 
         self.rect = self.image.get_rect(
             midleft=(configs.SCREEN_WIDTH, random.uniform(min_y, max_y)))
+        self.mask = pygame.mask.from_surface(self.image)
+
+        self.passed = False
 
         super().__init__(*groups)
 
@@ -36,3 +42,9 @@ class Column(pygame.sprite.Sprite):
 
         if self.rect.right <= 0:
             self.kill()
+
+    def is_passed(self):
+        if self.rect.x < 50 and not self.passed:
+            self.passed = True
+            return True
+        return False
