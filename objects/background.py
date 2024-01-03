@@ -2,10 +2,12 @@ import pygame.sprite
 
 import assets
 import configs
+from layer import Layer
 
 
 class Background(pygame.sprite.Sprite):
     def __init__(self, index,  *groups):
+        self._layer = Layer.BACKGROUND
         self.image = assets.get_sprite("background")
 
         # set_mode()를 통해 생성된 스크린에 get_rect를 통해 이미지를 위치시킴

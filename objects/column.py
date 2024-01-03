@@ -2,10 +2,12 @@ import random
 import pygame
 import assets
 import configs
+from layer import Layer
 
 
 class Column(pygame.sprite.Sprite):
     def __init__(self, *groups):
+        self._layer = Layer.OBSTACLE
         self.gap = 100
 
         self.sprite = assets.get_sprite("pipe-green")
@@ -31,6 +33,7 @@ class Column(pygame.sprite.Sprite):
 
         self.rect = self.image.get_rect(
             midleft=(configs.SCREEN_WIDTH, random.uniform(min_y, max_y)))
+        self.mask = pygame.mask.from_surface(self.image)
 
         super().__init__(*groups)
 

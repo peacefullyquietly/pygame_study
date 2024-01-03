@@ -2,6 +2,7 @@ import pygame
 import configs
 import assets
 from objects.background import Background
+from objects.bird import Bird
 from objects.column import Column
 from objects.floor import Floor
 
@@ -14,6 +15,7 @@ screen = pygame.display.set_mode(
 clock = pygame.time.Clock()         # 게임 루프 내 FPS(초당 프레임 수)를 조절 하는 데 사용
 column_create_event = pygame.USEREVENT
 running = True
+gameover = False
 
 assets.load_sprites()
 
@@ -26,6 +28,7 @@ Background(1, sprites)
 Floor(0, sprites)
 Floor(1, sprites)
 
+bird = Bird(sprites)
 # Column(sprites)
 
 pygame.time.set_timer(column_create_event, 1500)
@@ -37,14 +40,20 @@ while running:
         if event.type == column_create_event:
             Column(sprites)
 
-    screen.fill("pink")
+        bird.handle_event(event)
+
+    screen.fill(0)
 
     sprites.draw(screen)
 
-    # 일부 화면만 업데이트 할 경우..?
-    sprites.update()
+    if not gameover:
+        # 일부 화면만 업데이트 할 경우..?
+        sprites.update()
 
-    # 전체 화면을 업데이트
+    if bird.check_collision(sprites):
+        gameover = True
+
+        # 전체 화면을 업데이트
     pygame.display.flip()
 
     # 초당 configs.FPS 프레임으로 설정
