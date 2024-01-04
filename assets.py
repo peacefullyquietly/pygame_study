@@ -1,6 +1,8 @@
 import os
 import pygame
+
 sprites = {}
+audios = {}
 
 
 # 지정된 디렉토리 내의 이미지 파일을 불러와 sprites라는 딕셔너리에 저장
@@ -19,3 +21,15 @@ def load_sprites():
 
 def get_sprite(name):
     return sprites[name]
+
+
+def load_audios():
+    path = os.path.join("assets", "audios")
+    for file in os.listdir(path):
+        audios[file.split('.')[0]] = pygame.mixer.Sound(
+            os.path.join(path, file))
+
+
+def play_audio(name):
+    name = name.rstrip()
+    audios[name].play()
